@@ -1,21 +1,26 @@
-workspace:
-  base: /home/drone-demo
-  path: .
-
 kind: pipeline
-type: exec
-name: default
-
-platform:
-  os: linux
-  arch: 386
-
+type: docker
+name: build
 steps:
-- name: build
-  commands:
-  - pwd
-  - ls -la
-
+  - name: build
+    image: golang:alpine
+    pull: if-not-exists # always never
+    environment:
+      KEY: VALUE
+    commands:
+      - echo $KEY
+      - pwd
+      - ls
+      - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+      - ./app
+  - name: deploy
+    image: golang:alpine
+    pull: if-not-exists # always never
+    environment:
+      KEY: VALUE
+    commands:
+      - pwd
+      - ls
 trigger:
   branch:
-  - master
+    - master
