@@ -1,0 +1,21 @@
+workspace:
+  base: /home/drone-demo
+  path: .
+
+kind: pipeline
+type: exec
+name: default
+
+platform:
+  os: linux
+  arch: 386
+
+steps:
+- name: build
+  commands:
+  - pwd
+  - ls -la
+
+trigger:
+  branch:
+  - master
